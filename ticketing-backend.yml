@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ticketing-backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ticketing-backend
+  template:
+    metadata:
+      labels:
+        app: ticketing-backend
+    spec:
+      containers:
+        - name: backend
+          image: mitaakash/ticketing-backend
+          ports:
+            - containerPort: 5173
+          env:
+            - name: MONGO_URI
+              valueFrom:
+                secretKeyRef:
+                  name: mongo-secret
+                  key: MONGO_URI
+
