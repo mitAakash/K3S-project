@@ -2,7 +2,7 @@ apiVersion: traefik.io/v1alpha1
 kind: IngressRoute
 metadata:
   name: ticketing-frontend
-  namespace: default
+  namespace: ticketing-project
 spec:
   entryPoints:
     - web
@@ -18,7 +18,7 @@ apiVersion: traefik.io/v1alpha1
 kind: IngressRoute
 metadata:
   name: ticketing-backend
-  namespace: default
+  namespace: ticketing-project
 spec:
   entryPoints:
     - web
@@ -27,5 +27,5 @@ spec:
       kind: Rule
       services:
         - name: ticketing-backend
-          port: 5173
+          port: 5000
 

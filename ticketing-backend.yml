@@ -16,11 +16,25 @@ spec:
         - name: backend
           image: mitaakash/ticketing-backend
           ports:
-            - containerPort: 5173
+            - containerPort: 5000
           env:
             - name: MONGO_URI
               valueFrom:
                 secretKeyRef:
                   name: mongo-secret
                   key: MONGO_URI
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ticketing-backend
+  namespace: ticketing-project
+spec:
+  type: ClusterIP
+  selector:
+    app: ticketing-backend
+  ports:
+    - protocol: TCP
+      port: 5000        # service port
+      targetPort: 5000  # container port
 
