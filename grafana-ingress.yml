@@ -1,0 +1,155 @@
+#############################################
+# GRAFANA
+#############################################
+
+---
+apiVersion: traefik.io/v1alpha1
+kind: Middleware
+metadata:
+  name: grafana-redirect-https
+  namespace: monitoring
+spec:
+  redirectScheme:
+    scheme: https
+    permanent: true
+
+---
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: grafana-http
+  namespace: monitoring
+spec:
+  entryPoints:
+    - web
+  routes:
+    - match: Host(`grafana.gaurav.club`)
+      kind: Rule
+      middlewares:
+        - name: grafana-redirect-https
+      services:
+        - name: kps-grafana
+          port: 80
+
+---
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: grafana-https
+  namespace: monitoring
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - match: Host(`grafana.gaurav.club`)
+      kind: Rule
+      services:
+        - name: kps-grafana
+          port: 80
+  tls:
+    certResolver: "letsencrypt"
+
+
+#############################################
+# PROMETHEUS
+#############################################
+
+---
+apiVersion: traefik.io/v1alpha1
+kind: Middleware
+metadata:
+  name: prometheus-redirect-https
+  namespace: monitoring
+spec:
+  redirectScheme:
+    scheme: https
+    permanent: true
+
+---
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: prometheus-http
+  namespace: monitoring
+spec:
+  entryPoints:
+    - web
+  routes:
+    - match: Host(`prometheus.gaurav.club`)
+      kind: Rule
+      middlewares:
+        - name: prometheus-redirect-https
+      services:
+        - name: kps-kube-prometheus-stack-prometheus
+          port: 9090
+
+---
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: prometheus-https
+  namespace: monitoring
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - match: Host(`prometheus.gaurav.club`)
+      kind: Rule
+      services:
+        - name: kps-kube-prometheus-stack-prometheus
+          port: 9090
+  tls:
+    certResolver: "letsencrypt"
+
+
+#############################################
+# ALERTMANAGER
+#############################################
+
+---
+apiVersion: traefik.io/v1alpha1
+kind: Middleware
+metadata:
+  name: alertmanager-redirect-https
+  namespace: monitoring
+spec:
+  redirectScheme:
+    scheme: https
+    permanent: true
+
+---
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: alertmanager-http
+  namespace: monitoring
+spec:
+  entryPoints:
+    - web
+  routes:
+    - match: Host(`alert.gaurav.club`)
+      kind: Rule
+      middlewares:
+        - name: alertmanager-redirect-https
+      services:
+        - name: kps-kube-prometheus-stack-alertmanager
+          port: 9093
+
+---
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: alertmanager-https
+  namespace: monitoring
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - match: Host(`alert.gaurav.club`)
+      kind: Rule
+      services:
+        - name: kps-kube-prometheus-stack-alertmanager
+          port: 9093
+  tls:
+    certResolver: "letsencrypt"
+
