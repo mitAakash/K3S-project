@@ -1,20 +1,21 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: ticketing-backend
+  name: crm-backend
+  namespace: crm
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: ticketing-backend
+      app: crm-backend
   template:
     metadata:
       labels:
-        app: ticketing-backend
+        app: crm-backend
     spec:
       containers:
         - name: backend
-          image: mitaakash/ticketing-backend
+          image: mitaakash/crm-backend
           ports:
             - containerPort: 5000
           env:
@@ -27,12 +28,12 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: ticketing-backend
-  namespace: aakash
+  name: crm-backend
+  namespace: crm
 spec:
   type: ClusterIP
   selector:
-    app: ticketing-backend
+    app: crm-backend
   ports:
     - protocol: TCP
       port: 5000        # service port
