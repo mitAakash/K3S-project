@@ -2,6 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: mongo
+  namespace: crm
 spec:
   replicas: 1
   selector:
@@ -23,7 +24,6 @@ spec:
                 secretKeyRef:
                   name: mongo-secret
                   key: MONGO_INITDB_ROOT_USERNAME
-
             - name: MONGO_INITDB_ROOT_PASSWORD
               valueFrom:
                 secretKeyRef:
@@ -34,12 +34,14 @@ spec:
               mountPath: /data/db
       volumes:
         - name: mongo-storage
-          emptyDir: {}
+          persistentVolumeClaim:
+            claimName: mongo-pvc
 ---
 apiVersion: v1
 kind: Service
 metadata:
   name: mongo
+  namespace: crm
 spec:
   type: ClusterIP
   selector:
