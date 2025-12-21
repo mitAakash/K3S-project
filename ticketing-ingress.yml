@@ -2,7 +2,7 @@ apiVersion: traefik.io/v1alpha1
 kind: IngressRoute
 metadata:
   name: ticketing-frontend
-  namespace: aakash
+
 spec:
   entryPoints:
     - web
@@ -20,7 +20,7 @@ apiVersion: traefik.io/v1alpha1
 kind: IngressRoute
 metadata:
   name: ticketing-backend
-  namespace: aakash
+
 spec:
   entryPoints:
     - web
@@ -33,4 +33,3 @@ spec:
           port: 5000
   tls:
     certResolver: letsencrypt
-

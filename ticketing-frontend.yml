@@ -23,7 +23,7 @@ kind: Service
 metadata:
   name: ticketing-frontend
 spec:
-  type: NodePort
+  type: ClusterIP
   selector:
     app: ticketing-frontend
   ports:
