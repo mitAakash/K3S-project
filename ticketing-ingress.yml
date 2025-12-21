@@ -1,17 +1,17 @@
 apiVersion: traefik.io/v1alpha1
 kind: IngressRoute
 metadata:
-  name: crm-frontend
-  namespace: crm
+  name: ticketing-frontend
+  namespace: aakash
 spec:
   entryPoints:
     - web
     - websecure
   routes:
-    - match: Host(`crm.gaurav.club`)
+    - match: Host(`gaurav.club`)
       kind: Rule
       services:
-        - name: crm-frontend
+        - name: ticketing-frontend
           port: 80
   tls:
     certResolver: letsencrypt
@@ -19,17 +19,17 @@ spec:
 apiVersion: traefik.io/v1alpha1
 kind: IngressRoute
 metadata:
-  name: crm-backend
-  namespace: crm
+  name: ticketing-backend
+  namespace: aakash
 spec:
   entryPoints:
     - web
     - websecure
   routes:
-    - match: Host(`crm.gaurav.club`) && PathPrefix(`/api`)
+    - match: Host(`gaurav.club`) && PathPrefix(`/api`)
       kind: Rule
       services:
-        - name: crm-backend
+        - name: ticketing-backend
           port: 5000
   tls:
     certResolver: letsencrypt
