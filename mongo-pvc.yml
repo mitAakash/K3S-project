@@ -4,9 +4,9 @@ metadata:
   name: mongo-pvc
   namespace: crm
 spec:
+  storageClassName: local-path
   accessModes:
     - ReadWriteOnce
-  storageClassName: local-path
   resources:
     requests:
       storage: 5Gi
